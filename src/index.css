@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0c0c0b;
+  --color-elevated: #141413;
+  --color-cinema: #090908;
+  --color-fg: #f3f1ea;
+  --color-muted: #9a958a;
+  --color-rule: #2a2926;
+  --color-accent: #c4a35a;
+  --color-focus: #e6d5a3;
+
+  --font-sans: "Satoshi", "Helvetica Neue", Arial, sans-serif;
+  --font-editorial: "Instrument Serif", "Times New Roman", serif;
+
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1.3;
+}
+
+@custom-variant fine-hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+@layer base {
+  html {
+    @apply bg-bg font-sans text-fg antialiased;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply m-0 min-h-dvh bg-bg text-fg;
+  }
+
+  ::selection {
+    @apply bg-accent text-bg;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  img,
+  video {
+    @apply block max-w-full;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  .hero-name-wave {
+    --hero-water-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 100' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 48C75 39 150 57 225 48S375 39 450 48S600 57 675 48S825 39 900 48S1050 57 1125 48S1175 39 1200 44L1200 100L0 100Z'/%3E%3C/svg%3E");
+  }
+
+  .water-wave-background {
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    background: #0c0c0b;
+  }
+
+  .water-wave-background svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .water-wave-layer {
+    fill: none;
+    stroke: #c4a35a;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    will-change: transform;
+  }
+
+  .water-wave-layer path {
+    stroke-width: 1.25;
+  }
+
+  .water-wave-layer--far {
+    opacity: 0.12;
+    animation: water-flow-right 18s linear infinite;
+  }
+
+  .water-wave-layer--mid {
+    opacity: 0.2;
+    animation: water-flow-right 13s linear infinite;
+    animation-delay: -6s;
+  }
+
+  .water-wave-layer--near {
+    opacity: 0.26;
+    animation: water-flow-right 16s linear infinite;
+  }
+
+  .hero-name-wave {
+    overflow: hidden;
+    mask-image: var(--hero-water-wave);
+    mask-size: 150% 100%;
+    mask-position: 0 0;
+    mask-repeat: repeat-x;
+    -webkit-mask-image: var(--hero-water-wave);
+    -webkit-mask-size: 150% 100%;
+    -webkit-mask-position: 0 0;
+    -webkit-mask-repeat: repeat-x;
+    animation: hero-water-wave 18s linear infinite;
+  }
+
+  @keyframes hero-water-wave {
+    from { mask-position: 0 0; -webkit-mask-position: 0 0; }
+    to { mask-position: -150% 0; -webkit-mask-position: -150% 0; }
+  }
+
+  @keyframes water-flow-right {
+    from { transform: translateX(-4%); }
+    to { transform: translateX(4%); }
+  }
+
+  @media (max-width: 767px) {
+    .hero-name-wave {
+      mask-size: 185% 100%;
+      -webkit-mask-size: 185% 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .water-wave-layer,
+    .hero-name-wave { animation: none; }
+  }
+}
